@@ -2,6 +2,7 @@ import { useAnimations, useGLTF, useScroll } from "@react-three/drei"
 import { useFrame, useThree } from "@react-three/fiber"
 import { useEffect, useRef } from "react"
 import { Group } from "three"
+import "../app/model.css"
 
 useGLTF.preload("/wall-eanimated.glb")
 
@@ -21,7 +22,7 @@ export default function Model() {
     
     if (group.current) {
       // Set the model to a specific size when the component mounts
-      group.current.scale.set(0.4, 0.4, 0.4) // Example: increase the size by 1.5 times
+      group.current.scale.set(1.0, 1.0, 1.0) // Example: increase the size by 1.5 times
       group.current.rotation.set(0.1, Math.PI / 0.53, 0);
       group.current.position.set(0, -2.5, 0) // Example: move the model to x=1, y=0, z=-2
     }
