@@ -1,3 +1,12 @@
+<h1 align="center">WALL-E</h1>
+<div align="center">
+  <h3>Wall-E 3D Animated WebApp Using ThreeJS/NextJS</h3>
+</div>
+
+<img src="/public/Screenshot.png">
+
+###
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
