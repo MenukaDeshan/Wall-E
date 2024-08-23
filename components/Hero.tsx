@@ -1,9 +1,5 @@
-import { div } from "three/examples/jsm/nodes/Nodes.js"
 import dynamic from "next/dynamic"
-import { Suspense, useEffect } from "react"
-import { useProgress, Html, ScrollControls, Scroll } from "@react-three/drei"
-
-const Scene = dynamic(() => import("@/components/Scene"), { ssr: false })
+import {  Scroll } from "@react-three/drei"
 
 export default function Hero() {
 
