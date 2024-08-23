@@ -70,7 +70,7 @@ export default function Projects() {
 
   return (
     <div ref={sectionRef} className="relative w-screen min-h-screen overflow-hidden bg-white">
-      <video
+      {/* <video
         ref={videoRef1}
         src="/path/to/video1.mp4"
         type="video/mp4"
@@ -87,7 +87,7 @@ export default function Projects() {
         muted
         loop
         className="absolute top-0 right-[40%] w-[60%] h-auto z-0 md:right-0 md:top-[10%]"
-      />
+      /> */}
       <div
         ref={titleRef}
         className="absolute top-0 right-0 flex flex-col items-center w-[50%] h-full md:top-[60%] md:right-[2rem] sm:top-[70%] sm:right-[40%]"
