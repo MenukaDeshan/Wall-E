@@ -5,7 +5,7 @@ import Model from "./Model"
 import Hero from "./Hero"
 import { Suspense, useEffect } from "react"
 import { useProgress, Html, ScrollControls, Scroll, RoundedBox, Environment,Sparkles,Backdrop,Float, Ring } from "@react-three/drei"
-import baffle from "baffle";
+
 
 function Loader() {
   const { progress, active } = useProgress()
@@ -13,15 +13,7 @@ function Loader() {
 }
 
 export default function Scene() {
-  useEffect(()=> {
-    const target = baffle('.title')
-    target.set({
-      characters: 'W A L L - E',
-      speed: 200
-    })
-    target.start()
-    target.reveal(1000,1000)
-  },[])
+
   return (
     <Canvas gl={{ antialias: true }} dpr={[1, 1.5]} className="relative h-svh">
       <directionalLight position={[-1, 1, 10]} intensity={4} />
