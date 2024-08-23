@@ -29,7 +29,7 @@ export default function Hero() {
       </div>
       
       <h2 style={{ position: 'absolute', top: '350vh', left: '50%', transform: `translate(-50%,-50%)` }}>
-        There's plenty of space out in space!
+        There&apos;s plenty of space out in space!
       </h2>              
       
       <button style={{ position: 'absolute', top: `590vh`,left: '50%', transform: `translate(-50%,-50%)` }}>
