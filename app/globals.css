@@ -1,85 +1,97 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+body {
+  color: #f4f0e8;
+  background: #151515;
+  font-family: system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.experience {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  background: #151515 url("/1bg.jpg") center / cover;
+}
+
+.scene-status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  background: rgb(21 21 21 / 80%);
+}
+
+.story {
+  pointer-events: none;
+  text-shadow: 0 2px 12px #000, 0 2px 4px #000;
+}
+
+.story-intro,
+.story-panel {
+  position: absolute;
+}
+
+.story-intro {
+  inset: 64svh 1rem auto;
+  text-align: center;
+}
+
+.story-intro h1 {
+  font-size: clamp(3.75rem, 16vw, 12rem);
+  font-weight: 850;
+  letter-spacing: -0.075em;
+  line-height: 0.95;
+}
+
+.story-intro p {
+  margin-top: 0.875rem;
+  font-size: 0.875rem;
+}
+
+.story-panel {
+  width: min(25rem, calc(100% - 2 * clamp(1.25rem, 8vw, 8rem)));
+}
+
+.story-panel h2 {
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.story-panel p {
+  margin-top: 0.75rem;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.5;
+}
+
+.story-earth {
+  top: 142svh;
+  left: clamp(1.25rem, 8vw, 8rem);
+}
+
+.story-eve {
+  top: 230svh;
+  right: clamp(1.25rem, 8vw, 8rem);
+}
+
+.story-finale {
+  top: 350svh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+@media (max-height: 420px) {
+  .story-intro {
+    top: 55svh;
   }
-}
-html,
-body {
-  height: 100%;
-}
 
-body {
-  color: rgb(var(--foreground-rgb));
-
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-h1,h2,h3,h4,h5 {
-  text-transform: uppercase;
-  letter-spacing: 1.03px;
-  line-height: 1.2em;
-}
-
-h1 {
-  background: -webkit-linear-gradient(0deg,#cdcbca, aliceblue,#cdcbca,#2a3a3f);
-  background-size: auto;
-  background-clip: border-box;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 100% 100% !important;
-}
-
-h2 {
-  background: -webkit-linear-gradient(0deg,#cdcbca, aliceblue,#cdcbca,#2a3a3f);
-  background-size: auto;
-  background-clip: border-box;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 100% 100% !important;
-  font-size: 40px;
-}
-
-p {
-  font-size: 20px;
-  line-height: 1.4em;
-}
-
-button {
-  background: transparent ;
-  display: inline-block;
-  box-shadow: none;
-  text-transform: uppercase;
-  font-size: 16px;
-  letter-spacing: 3px;
-  line-height: 1.4em;
-  border: 1px solid #fff;
-  color: #fff;
-  padding: 14px 40px;
-  border-radius: 3px;
-}
-
-.row {
-  width: 100%;
-  padding: 0 40px;
-}
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .story-intro h1 {
+    font-size: min(16vw, 22svh);
   }
 }

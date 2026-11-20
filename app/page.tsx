@@ -1,12 +1,16 @@
-import dynamic from "next/dynamic"
-import Projects from "../components/Projects"
+"use client"
 
-const Scene = dynamic(() => import("@/components/Scene"), { ssr: false })
+import dynamic from "next/dynamic"
+
+const Scene = dynamic(() => import("@/components/Scene"), {
+  ssr: false,
+  loading: () => <p className="scene-status" role="status">Loading WALL-E…</p>,
+})
 
 export default function Home() {
   return (
-    <main className="h-full bg-cover bg-center" style={{ backgroundImage: 'url(/11bg.jpg)' }}>
-        <Scene />
+    <main className="experience">
+      <Scene />
     </main>
   )
 }

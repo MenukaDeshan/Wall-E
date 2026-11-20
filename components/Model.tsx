@@ -1,7 +1,7 @@
 import { useAnimations, useGLTF, useScroll } from "@react-three/drei"
-import { useFrame, useThree } from "@react-three/fiber"
+import { useFrame } from "@react-three/fiber"
 import { useEffect, useRef, useLayoutEffect } from "react"
-import { Group } from "three"
+import type { AnimationAction, Group } from "three"
 import gsap from 'gsap'
 
 // Preload the GLTF model
@@ -9,22 +9,21 @@ useGLTF.preload("/wall-eanimated.glb")
 
 export default function Model() {
   const group = useRef<Group>(null)
-  const { nodes, materials, animations, scene } = useGLTF("/wall-eanimated.glb")
+  const { animations, scene } = useGLTF("/wall-eanimated.glb")
   const { actions } = useAnimations(animations, scene)
   const scroll = useScroll()
+  const animation = useRef<AnimationAction | null>(null)
   const tl = useRef<gsap.core.Timeline | null>(null)
 
   useEffect(() => {
-    if (actions["Scene"]) {
-      actions["Scene"].play().paused = true
-    }
-    
-    if (group.current) {
-      // Set initial transformations
-      //Static size rotation and postition
-      group.current.scale.set(0.6, 0.6, 0.6)
-      group.current.rotation.set(0.1, Math.PI / 0.50, 0)
-      group.current.position.set(0, -1.0, 0) //x,y,z
+    const action = actions.Scene
+    if (!action) return
+
+    action.reset().play().paused = true
+    animation.current = action
+    return () => {
+      action.stop()
+      animation.current = null
     }
   }, [actions])
 
@@ -54,13 +53,17 @@ export default function Model() {
         .to(group.current.position, { x: 2.8}, 20.0)
         .to(group.current.position, { x: 5.2}, 20.5)
         .to(group.current.position, { x: 7.6}, 21)
+      return () => {
+        tl.current?.revert()
+        tl.current = null
+      }
     }
-  })
+  }, [])
 
   useFrame(() => {
-    if (actions["Scene"]) {
-      actions["Scene"].time =
-        (actions["Scene"].getClip().duration * scroll.offset) / 2
+    const action = animation.current
+    if (action) {
+      action.time = (action.getClip().duration * scroll.offset) / 2
     }
 
     if (tl.current) {
@@ -69,7 +72,7 @@ export default function Model() {
   })
 
   return (
-    <group ref={group}>
+    <group ref={group} scale={0.6} rotation={[0.1, Math.PI * 2, 0]} position={[0, -1, 0]}>
       <primitive object={scene} />
     </group>
   )

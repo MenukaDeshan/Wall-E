@@ -1,34 +1,41 @@
-import dynamic from "next/dynamic"
-import {  Scroll } from "@react-three/drei"
+﻿import { Scroll, useScroll } from "@react-three/drei"
+import { useEffect, type RefObject } from "react"
 
-export default function Hero() {
+export default function Hero({ scrollElementRef }: { scrollElementRef: RefObject<HTMLElement | null> }) {
+  const { el } = useScroll()
 
-    return (
-    <Scroll html style={{width: '100%'}}>
-      <h1 className='title' 
-        style={{ color: '#cdcbca',position: 'absolute', top: `65vh`,left: '50%', fontSize: '13em', transform: `translate(-50%,-50%)` }}>
-          Wall-E
-      </h1>
-      
-      <div className='row' style={{ position: 'absolute', top: `142vh`, left:'15%'}}>
-        <h2>Wall-E</h2>
-        <p style={{ maxWidth: '400px' }}>
-        A robot who is responsible for cleaning a waste-covered Earth meets another robot and falls in love with her. Together, they set out on a journey that will alter the fate of mankind.
-        </p>
+  useEffect(() => {
+    scrollElementRef.current = el
+    el.setAttribute("tabindex", "0")
+    el.setAttribute("role", "region")
+    el.setAttribute("aria-label", "WALL-E story")
+    return () => {
+      scrollElementRef.current = null
+    }
+  }, [el, scrollElementRef])
+
+  return (
+    <Scroll html style={{ width: "100%" }}>
+      <div className="story">
+        <header className="story-intro">
+          <h1>WALL·E</h1>
+          <p>Scroll to follow WALL-E <span aria-hidden="true">↓</span></p>
+        </header>
+
+        <section className="story-panel story-earth">
+          <h2>Alone on Earth</h2>
+          <p>In 2805, WALL-E spends his days cleaning up a deserted Earth, one cube of rubbish at a time.</p>
+        </section>
+
+        <section className="story-panel story-eve">
+          <h2>Along comes EVE</h2>
+          <p>When a probe from the starship Axiom arrives, WALL-E follows her across the galaxy.</p>
+        </section>
+
+        <section className="story-panel story-finale">
+          <h2>There&apos;s plenty of space out in space!</h2>
+        </section>
       </div>
-
-      <div className='row' style={{ position: 'absolute', top: `230vh`}}>
-        <div className='col' style={{ position: 'absolute', right: `40px`, width: "540px"}}>
-          <h2 style={{ maxWidth: "440px" }}>Wall-E</h2>
-          <p style={{ maxWidth: '440px' }}>
-          The film follows a solitary robot named WALL-E on a future, uninhabitable, deserted Earth in 2805, left to clean up garbage. He is visited by a robot called EVE sent from the starship Axiom, with whom he falls in love and pursues across the galaxy.
-          </p>                
-        </div>
-      </div>
-      
-      <h2 style={{ position: 'absolute', top: '350vh', left: '50%', transform: `translate(-50%,-50%)` }}>
-        There&apos;s plenty of space out in space!
-      </h2>              
     </Scroll>
-    )
-  }
+  )
+}
