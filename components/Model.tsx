@@ -1,7 +1,7 @@
-import { useAnimations, useGLTF, useScroll } from "@react-three/drei"
+import { useGLTF, useScroll } from "@react-three/drei"
 import { useFrame } from "@react-three/fiber"
-import { useEffect, useRef, useLayoutEffect } from "react"
-import type { AnimationAction, Group } from "three"
+import { useRef, useLayoutEffect } from "react"
+import { AnimationMixer, type AnimationAction, type Group } from "three"
 import gsap from 'gsap'
 
 // Preload the GLTF model
@@ -10,28 +10,29 @@ useGLTF.preload("/wall-eanimated.glb")
 export default function Model() {
   const group = useRef<Group>(null)
   const { animations, scene } = useGLTF("/wall-eanimated.glb")
-  const { actions } = useAnimations(animations, scene)
   const scroll = useScroll()
   const animation = useRef<AnimationAction | null>(null)
   const tl = useRef<gsap.core.Timeline | null>(null)
 
-  useEffect(() => {
-    const action = actions.Scene
-    if (!action) return
+  useLayoutEffect(() => {
+    const clip = animations.find((animation) => animation.name === "Scene")
+    if (!clip) return
 
+    const mixer = new AnimationMixer(scene)
+    const action = mixer.clipAction(clip)
     action.reset().play().paused = true
     animation.current = action
     return () => {
       action.stop()
+      mixer.uncacheRoot(scene)
       animation.current = null
     }
-  }, [actions])
+  }, [animations, scene])
 
   useLayoutEffect(() => {
     if (group.current) {
-      tl.current = gsap.timeline({ defaults: { ease: 'power1.inOut' } })
+      tl.current = gsap.timeline({ paused: true, defaults: { duration: 0.9, ease: 'sine.inOut' } })
       tl.current
-        .to(group.current.position, { y: -1.0 }, 0)
         .to(group.current.position, { y: -1.5 }, 0.5)
         .to(group.current.rotation, {y: Math.PI / 0.53},2)
         .to(group.current.position, { x: 2, z:-2.0}, 3)
@@ -41,18 +42,7 @@ export default function Model() {
 
         .to(group.current.scale, { x: 0.7, y: 0.7, z: 0.7 }, 15)
         .to(group.current.rotation, { y: Math.PI /0.40 }, 18)
-        .to(group.current.position, { x: -0.8}, 18.2)
-        .to(group.current.position, { x: -0.4}, 18.4)
-        .to(group.current.position, { x: -0.0}, 18.6)
-        .to(group.current.position, { x: 0.4}, 18.8)
-        .to(group.current.position, { x: 0.8}, 19.0)
-        .to(group.current.position, { x: 1.2}, 19.2)
-        .to(group.current.position, { x: 1.6}, 19.4)
-        .to(group.current.position, { x: 2.0}, 19.6)
-        .to(group.current.position, { x: 2.4}, 19.8)
-        .to(group.current.position, { x: 2.8}, 20.0)
-        .to(group.current.position, { x: 5.2}, 20.5)
-        .to(group.current.position, { x: 7.6}, 21)
+        .to(group.current.position, { x: 7.6, duration: 3.3, ease: 'power2.in' }, 18.2)
       return () => {
         tl.current?.revert()
         tl.current = null
@@ -61,14 +51,14 @@ export default function Model() {
   }, [])
 
   useFrame(() => {
+    const progress = Math.min(1, Math.max(0, scroll.offset))
     const action = animation.current
     if (action) {
-      action.time = (action.getClip().duration * scroll.offset) / 2
+      action.time = (action.getClip().duration * progress) / 2
+      action.getMixer().update(0)
     }
 
-    if (tl.current) {
-      tl.current.seek(scroll.offset * tl.current.duration())
-    }
+    tl.current?.progress(progress)
   })
 
   return (
